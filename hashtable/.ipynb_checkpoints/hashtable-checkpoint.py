@@ -21,9 +21,8 @@ class HashTable:
     """
 
     def __init__(self, capacity):
-        # Initiate our array with empty values.
-        self.capacity = capacity
-        self.storage = [none] * capacity
+        # Your code here
+
 
     def get_num_slots(self):
         """
@@ -35,7 +34,7 @@ class HashTable:
 
         Implement this.
         """
-        return capacity
+        # Your code here
 
 
     def get_load_factor(self):
@@ -45,7 +44,6 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        
 
 
     def fnv1(self, key):
@@ -65,11 +63,6 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
-        hash_value = 5381
-    
-        for char in key:
-            hash_value = ((hash_value << 5)+hash_value) + char
-        return hash_value
 
 
     def hash_index(self, key):
@@ -80,7 +73,6 @@ class HashTable:
         #return self.fnv1(key) % self.capacity
         return self.djb2(key) % self.capacity
 
-    
     def put(self, key, value):
         """
         Store the value with the given key.
@@ -90,21 +82,8 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        index = self.hash_index(key)
-        head = self.storage[index]
-        entry = HashTableEntry(key, value)
-        
-     
-        
-        self.storage[index] = entry
-        entry.next = head
-        
-        # Get the index into "data" to store "v"
-	    i = hash_index(key)
 
-	    # Store v there
-	    self.storage[i] = value
-        
+
     def delete(self, key):
         """
         Remove the value stored with the given key.
@@ -114,23 +93,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-#         find index
-#         search through index
-#         find value with key
-#         change pointers to next value
-       
-        index = self.hash_index(key)
-        entry = self.storage[index]
-        previous = None
-        
-        while entry != None:
-            if entry.key == key:
-                previous.next = entry.next #nothing is pointing to entry now
-                return
-            previous = entry
-            entry = entry.next
-        print("Key not found")
-                
+
 
     def get(self, key):
         """
@@ -141,7 +104,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
-    
+
 
     def resize(self, new_capacity):
         """
