@@ -6,6 +6,7 @@ class HashTableEntry:
         self.key = key
         self.value = value
         self.next = None
+        
 
 
 # Hash table can't have fewer than this many slots
@@ -24,7 +25,8 @@ class HashTable:
         # Initiate our array with empty values.
         self.capacity = capacity
         self.storage = [none] * capacity
-
+        self.load = 0
+        
     def get_num_slots(self):
         """
         Return the length of the list you're using to hold the hash
@@ -37,7 +39,7 @@ class HashTable:
         """
         return capacity
 
-
+    
     def get_load_factor(self):
         """
         Return the load factor for this hash table.
@@ -46,6 +48,9 @@ class HashTable:
         """
         # Your code here
         
+        load = self.load / self.capacity
+        
+        return load
 
 
     def fnv1(self, key):
@@ -79,7 +84,7 @@ class HashTable:
         """
         #return self.fnv1(key) % self.capacity
         return self.djb2(key) % self.capacity
-
+#takes key and returns the hash index(where key shall live)
     
     def put(self, key, value):
         """
@@ -98,11 +103,20 @@ class HashTable:
         
         # Your code here
         index = self.hash_index(key)
-        head = self.storage[index]
-        entry = HashTableEntry(key, value)
-        
-        self.storage[index] = entry
-        entry.next = head
+        if self.storage[index] == None:
+            self.storage[index] = HashTableEntry(key, value)
+            self.load +=1
+            return
+        cur = self.storage[index]
+        while true:
+            if key == cur.key:
+                cur.value = value
+                return
+            if cur.next == None:
+                cur.next = HashTableEntry(key, value)
+                self.load +=1
+                return
+            cur = cur.next
         
         
         # Get the index into "data" to store "v"
@@ -126,17 +140,25 @@ class HashTable:
 #         search through index
 #         find value with key
 #         change pointers to next value
-       
+    #special case: value is head
+        
+    
+    
+    
         index = self.hash_index(key)
-        entry = self.storage[index]
+        cur = self.storage[index]
         previous = None
         
-        while entry != None:
-            if entry.key == key:
-                previous.next = entry.next #nothing is pointing to entry now
+        while cur != None:
+            if cur.key == key:
+                if previous is None:#if this is the head of the list
+                    self.storage[index] = cur.next
+                else:
+                    previous.next = cur.next #nothing is pointing to entry now
+                self.load -=1
                 return
-            previous = entry
-            entry = entry.next
+            previous = cur
+            cur = cur.next
         print("Key not found")
                 
             
@@ -151,10 +173,18 @@ class HashTable:
         Implement this.
         """
         # Your code here
-        i = get_index(k)
-
-	    return data[i]
+        i = hash_index(key)
+        return data[i]
     
+        index = self.hash_index(key)
+        cur = self.storage[index]#sets equal to head
+        #while cur does not equal None
+        while cur is not None:
+            if cur.key == key
+                return value 
+            cur = cur.next
+        return None
+        
 
     def resize(self, new_capacity):
         """
@@ -164,6 +194,7 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        
 
         
         
@@ -210,7 +241,7 @@ class LinkedList:#hash_table class
         cur = cur.next
         
         while cur is not None:
-            if cur.value = value:
+            if cur.value == value:
                 prev.next = cur.next
                 cur.next = None
                 return cur
