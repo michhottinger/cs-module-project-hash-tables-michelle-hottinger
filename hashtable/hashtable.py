@@ -89,21 +89,29 @@ class HashTable:
 
         Implement this.
         """
+#         * Find the index in the hash table for the key
+# * Search the list at that index for the key
+# * If it exists:
+#   * Return the value
+# * Else it doesn't exist:
+#   * Return `None`
+        
         # Your code here
         index = self.hash_index(key)
         head = self.storage[index]
         entry = HashTableEntry(key, value)
         
-     
-        
         self.storage[index] = entry
         entry.next = head
         
+        
         # Get the index into "data" to store "v"
-	    i = hash_index(key)
+# 	    i = get_index(k)
 
-	    # Store v there
-	    self.storage[i] = value
+# 	    # Store v there
+# 	    data[i] = v
+        
+  
         
     def delete(self, key):
         """
@@ -131,6 +139,8 @@ class HashTable:
             entry = entry.next
         print("Key not found")
                 
+            
+    
 
     def get(self, key):
         """
@@ -141,6 +151,9 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        i = get_index(k)
+
+	    return data[i]
     
 
     def resize(self, new_capacity):
@@ -151,6 +164,78 @@ class HashTable:
         Implement this.
         """
         # Your code here
+
+        
+        
+#notes from class
+#super simple linked list: next pointer sets to next node (11) --> (22) --> None head is a
+class Node:#HashTableEntry
+    def_init_(self, value):
+        self.value = value
+        self.next = None
+        
+class LinkedList:#hash_table class
+    def __init__(self):
+        self.head = None
+    
+    def find(self, value):#start at head of list and walk along next pointers to find value then return it
+        cur = self.head
+        
+        while cur is not None:
+            if cur.value ==value:
+                return cur
+            
+            cur = cur.next#bumps current pointer from one node down to the next node
+            
+        return None #we didn't find the value
+    #the above pattern repeats all over linked list node
+    
+    def insert_at_head(self, value):
+        n =Node(value)
+        n.next = self.head
+        self.head = n
+        
+        
+        
+    def delete(self, value):
+        cur = self.head
+        #special case of deleting the head
+        if cur.value == value:
+            self.head = self.head.next
+            cur.next = None
+            return cur
+        
+        #general case
+        prev = cur
+        cur = cur.next
+        
+        while cur is not None:
+            if cur.value = value:
+                prev.next = cur.next
+                cur.next = None
+                return cur
+            else:
+                prev = prev.next
+                cur = cur.next #move prev and cur to next postions
+                
+        return None
+        
+a = Node(11)
+b = Node(22)
+
+a.next = b
+
+#load factor
+#the number of records in teh hash table vs. the number of slots in the array
+
+data = [None] * 16
+put("1", 99)
+put("2", 99)
+
+#load factor = 2 / 16 #num of items we put into table devided by size of array
+#store the count of items in the hash, and keep it below .7 load factor
+
+
 
 
 
