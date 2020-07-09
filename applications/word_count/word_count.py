@@ -1,24 +1,61 @@
 
-from nltk.tokenize import word_tokenize
-from spacy.attrs import ORTH, NORM
-from spacy.tokenizer import Tokenizer
-from spacy.lang.en import English
-nlp = English()
+# from nltk.tokenize import word_tokenize
+# from spacy.attrs import ORTH, NORM
+# from spacy.tokenizer import Tokenizer
+# from spacy.lang.en import English
+# nlp = English()
+
+import re
     
 
 
 
 def word_count(s):
         # Create a blank Tokenizer with just the English vocab
-    tokenizer = Tokenizer(nlp.vocab)
-    # remove all tokens that are not alphabetic
-    case = [{ORTH: "doesn't"}]
-    tokenizer.add_special_case("doesn't", case)
-    # remove all tokens that are not alphabetic
-    tokens = word_tokenize(s)
-    words = [word for word in tokens if word.isalpha()]
-    words = [word.lower() for word in words]
+#     tokenizer = Tokenizer(nlp.vocab)
+#     # remove all tokens that are not alphabetic
+#     case = [{ORTH: "doesn\'t"}]
+#     tokenizer.add_special_case("doesn\'t", case)
+#     # remove all tokens that are not alphabetic
+#     tokens = word_tokenize(s)
     
+#     s = s.translate(str.maketrans({"-":  r"\-",
+#                                           "]":  r"\]",
+#                                           "\\": r"\\",
+#                                           "^":  r"\^",
+#                                           "$":  r"\$",
+#                                           "*":  r"\*",
+#                                           ".":  r"\."}))
+#     s = re.sub(r"[]", "", s)
+#     s = s.replace('.', '').replace(',', '')
+#'":;,.-+=/\\|[]{}()*^&'
+    s = s.translate(str.maketrans({'.': '',
+                                   ',': '',
+                                   '"': '',
+                                   '\\': '',
+                                   ':': '',
+                                   ';': '',
+                                   '[': '',
+                                   '}': '',
+                                   ']': '',
+                                   '{': '',
+                                   '*': '',
+                                   '^': '',
+                                   '&': '',
+                                   '-': '',
+                                   '+': '',
+                                   '=': '',
+                                   '/': '',
+                                   '|': '',
+                                   '(': '',
+                                   ')': ''}))
+    s = s.lower()
+    
+    words = s.split()
+    print(words)
+    #words = [word for word in escaped if word.isalpha()] won't work bc only letters
+#     words = [word.lower() for word in escaped]
+      
     
     
     
@@ -28,8 +65,8 @@ def word_count(s):
             freq[item] += 1
         else:
             freq[item] = 1
-    for key, value in freq.items():
-        return freq
+#     for key, value in freq.items():
+    return freq
   
              
 if __name__ == "__main__":
