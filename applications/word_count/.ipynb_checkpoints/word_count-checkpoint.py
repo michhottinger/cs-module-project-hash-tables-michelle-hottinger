@@ -19,36 +19,10 @@ def word_count(s):
 #     # remove all tokens that are not alphabetic
 #     tokens = word_tokenize(s)
     
-#     s = s.translate(str.maketrans({"-":  r"\-",
-#                                           "]":  r"\]",
-#                                           "\\": r"\\",
-#                                           "^":  r"\^",
-#                                           "$":  r"\$",
-#                                           "*":  r"\*",
-#                                           ".":  r"\."}))
-#     s = re.sub(r"[]", "", s)
-#     s = s.replace('.', '').replace(',', '')
+
 #'":;,.-+=/\\|[]{}()*^&'
-    s = s.translate(str.maketrans({'.': '',
-                                   ',': '',
-                                   '"': '',
-                                   '\\': '',
-                                   ':': '',
-                                   ';': '',
-                                   '[': '',
-                                   '}': '',
-                                   ']': '',
-                                   '{': '',
-                                   '*': '',
-                                   '^': '',
-                                   '&': '',
-                                   '-': '',
-                                   '+': '',
-                                   '=': '',
-                                   '/': '',
-                                   '|': '',
-                                   '(': '',
-                                   ')': ''}))
+
+    s = s.translate(str.maketrans('', '', '":;,.-+=/\\|[]{}()*^&')
     s = s.lower()
     
     words = s.split()
