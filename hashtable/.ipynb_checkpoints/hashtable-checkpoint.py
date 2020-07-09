@@ -6,6 +6,7 @@ class HashTableEntry:
         self.key = key
         self.value = value
         self.next = None
+        
 
 
 # Hash table can't have fewer than this many slots
@@ -21,9 +22,11 @@ class HashTable:
     """
 
     def __init__(self, capacity):
-        # Your code here
-
-
+        # Initiate our array with empty values.
+        self.capacity = capacity
+        self.storage = [None] * capacity
+        self.load = 0
+        
     def get_num_slots(self):
         """
         Return the length of the list you're using to hold the hash
@@ -34,9 +37,9 @@ class HashTable:
 
         Implement this.
         """
-        # Your code here
+        return capacity
 
-
+    
     def get_load_factor(self):
         """
         Return the load factor for this hash table.
@@ -44,6 +47,10 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        
+        load = self.load / self.capacity
+        
+        return load
 
 
     def fnv1(self, key):
@@ -63,6 +70,11 @@ class HashTable:
         Implement this, and/or FNV-1.
         """
         # Your code here
+        hash_value = 5381
+    
+        for char in key:
+            hash_value = ((hash_value << 5) + hash_value) + char
+        return hash_value
 
 
     def hash_index(self, key):
@@ -72,7 +84,8 @@ class HashTable:
         """
         #return self.fnv1(key) % self.capacity
         return self.djb2(key) % self.capacity
-
+#takes key and returns the hash index(where key shall live)
+    
     def put(self, key, value):
         """
         Store the value with the given key.
@@ -81,9 +94,41 @@ class HashTable:
 
         Implement this.
         """
+#         * Find the index in the hash table for the key
+# * Search the list at that index for the key
+# * If it exists:
+#   * Return the value
+# * Else it doesn't exist:
+#   * Return `None`
+        
         # Your code here
+        if self.get_load_factor() >= 0.7:
+            self.resize()
+        index = self.hash_index(key)
+        if self.storage[index] == None:
+            self.storage[index] = HashTableEntry(key, value)
+            self.load +=1
+            return
+        cur = self.storage[index]
+        while true:
+            if key == cur.key:
+                cur.value = value
+                return
+            if cur.next == None:
+                cur.next = HashTableEntry(key, value)
+                self.load +=1
+                return
+            cur = cur.next
+        
+        
+        # Get the index into "data" to store "v"
+# 	    i = get_index(k)
 
-
+# 	    # Store v there
+# 	    data[i] = v
+        
+  
+        
     def delete(self, key):
         """
         Remove the value stored with the given key.
@@ -93,7 +138,33 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+#         find index
+#         search through index
+#         find value with key
+#         change pointers to next value
+    #special case: value is head
+        
+    
+    
+    
+        index = self.hash_index(key)
+        cur = self.storage[index]
+        previous = None
+        
+        while cur != None:
+            if cur.key == key:
+                if previous is None:#if this is the head of the list
+                    self.storage[index] = cur.next
+                else:
+                    previous.next = cur.next #nothing is pointing to entry now
+                self.load -=1
+                return
+            previous = cur
+            cur = cur.next
+        print("Key not found")
+                
+            
+    
 
     def get(self, key):
         """
@@ -104,7 +175,18 @@ class HashTable:
         Implement this.
         """
         # Your code here
-
+        i = hash_index(key)
+        return data[i]
+    
+        index = self.hash_index(key)
+        cur = self.storage[index]#sets equal to head
+        #while cur does not equal None
+        while cur is not None:
+            if cur.key == key:
+                return value 
+            cur = cur.next
+        return None
+        
 
     def resize(self, new_capacity):
         """
@@ -114,6 +196,89 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        #my pseudocode
+        old_storage = self.storage
+        self.capacity = new_capacity
+        self.storage = [none] * new_capacity
+        self.load = 0
+        
+        for entry in old_storage:
+            while entry is not None:
+                
+                self.put(entry.key, entry.value)
+                entry = entry.next
+
+        
+        
+#notes from class
+#super simple linked list: next pointer sets to next node (11) --> (22) --> None head is a
+class Node:#HashTableEntry
+    def __init__(self, value):
+        self.value = value
+        self.next = None
+        
+class LinkedList:#hash_table class
+    def __init__(self):
+        self.head = None
+    
+    def find(self, value):#start at head of list and walk along next pointers to find value then return it
+        cur = self.head
+        
+        while cur is not None:
+            if cur.value ==value:
+                return cur
+            
+            cur = cur.next#bumps current pointer from one node down to the next node
+            
+        return None #we didn't find the value
+    #the above pattern repeats all over linked list node
+    
+    def insert_at_head(self, value):
+        n =Node(value)
+        n.next = self.head
+        self.head = n
+        
+        
+        
+    def delete(self, value):
+        cur = self.head
+        #special case of deleting the head
+        if cur.value == value:
+            self.head = self.head.next
+            cur.next = None
+            return cur
+        
+        #general case
+        prev = cur
+        cur = cur.next
+        
+        while cur is not None:
+            if cur.value == value:
+                prev.next = cur.next
+                cur.next = None
+                return cur
+            else:
+                prev = prev.next
+                cur = cur.next #move prev and cur to next postions
+                
+        return None
+        
+a = Node(11)
+b = Node(22)
+
+a.next = b
+
+#load factor
+#the number of records in teh hash table vs. the number of slots in the array
+
+# data = [None] * 16
+# put("1", 99)
+# put("2", 99)
+
+#load factor = 2 / 16 #num of items we put into table devided by size of array
+#store the count of items in the hash, and keep it below .7 load factor
+
+
 
 
 

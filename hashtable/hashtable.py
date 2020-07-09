@@ -24,7 +24,7 @@ class HashTable:
     def __init__(self, capacity):
         # Initiate our array with empty values.
         self.capacity = capacity
-        self.storage = [none] * capacity
+        self.storage = [None] * capacity
         self.load = 0
         
     def get_num_slots(self):
@@ -73,7 +73,7 @@ class HashTable:
         hash_value = 5381
     
         for char in key:
-            hash_value = ((hash_value << 5)+hash_value) + char
+            hash_value = ((hash_value << 5) + hash_value) + char
         return hash_value
 
 
@@ -102,6 +102,8 @@ class HashTable:
 #   * Return `None`
         
         # Your code here
+        if self.get_load_factor() >= 0.7:
+            self.resize()
         index = self.hash_index(key)
         if self.storage[index] == None:
             self.storage[index] = HashTableEntry(key, value)
@@ -180,7 +182,7 @@ class HashTable:
         cur = self.storage[index]#sets equal to head
         #while cur does not equal None
         while cur is not None:
-            if cur.key == key
+            if cur.key == key:
                 return value 
             cur = cur.next
         return None
@@ -194,14 +196,24 @@ class HashTable:
         Implement this.
         """
         # Your code here
+        #my pseudocode
+        old_storage = self.storage
+        self.capacity = new_capacity
+        self.storage = [none] * new_capacity
+        self.load = 0
         
+        for entry in old_storage:
+            while entry is not None:
+                
+                self.put(entry.key, entry.value)
+                entry = entry.next
 
         
         
 #notes from class
 #super simple linked list: next pointer sets to next node (11) --> (22) --> None head is a
 class Node:#HashTableEntry
-    def_init_(self, value):
+    def __init__(self, value):
         self.value = value
         self.next = None
         
@@ -259,9 +271,9 @@ a.next = b
 #load factor
 #the number of records in teh hash table vs. the number of slots in the array
 
-data = [None] * 16
-put("1", 99)
-put("2", 99)
+# data = [None] * 16
+# put("1", 99)
+# put("2", 99)
 
 #load factor = 2 / 16 #num of items we put into table devided by size of array
 #store the count of items in the hash, and keep it below .7 load factor
